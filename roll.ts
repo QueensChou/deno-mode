@@ -1,9 +1,8 @@
-import { Dice } from './dice.ts'
+import { Dice } from './dice.ts';
 
-class Roll {
+export class Roll {
   public name = 'roll';
   public regName = /^\/roll\s*(?<param>.*)$/;
-  public hasParam = true;
   public defaultParam = '1d100';
   public regParam = /^(?<quantity>\d*)[dD](?<surface>\d+)\s*(?<adjust>(\s*[\+\-]\s*\d+)*)\s*$/;
   public paramError = '参数错误!参数为xDy+z，x为数量（可选，默认为1），y为面数，z为调整值（可选，可重复，默认为1）';
@@ -25,7 +24,7 @@ class Roll {
     }
   }
 
-  public runCmd (text:string) {
+  public runCmd (text = this.defaultParam) {
     const arrCmd = this.regParam.exec(text);
     const surface = arrCmd?.groups?.surface;
     let type:string[] = [], value:string[] = [];
@@ -55,7 +54,7 @@ class Roll {
       total = result[0];
       str = `${quantity}D${surface}${adjust}: ${total}`;
     }
-    console.log(total);
+    // console.log(total);
     if ( type.length > 0) {
       for (const [index, item] of type.entries()) {
         switch (item) {
@@ -71,20 +70,10 @@ class Roll {
             break;
         }
       }
-      console.log(total);
+      // console.log(total);
       if (total < 1) total = 1;
       str = `${quantity}D${surface}${adjust}: (${result.join('+')})${adjust}=${total}`;
     }
     return str;
-  }
-}
-
-// 接收roll点指令
-export function rollSent(key:string){
-  const roll = new Roll();
-  if (roll.isCmd(key)) {
-    return roll.isParam(key);
-  } else {
-    return '指令错误！'
   }
 }

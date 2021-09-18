@@ -1,4 +1,26 @@
-import { rollSent } from './roll.ts'
+import { Roll } from './roll.ts';
+import { Dnd } from './dnd.ts';
+import { Coc } from './coc.ts';
+
+const roll = new Roll();
+const dnd = new Dnd();
+const coc = new Coc();
+
+const cmd = [roll, dnd, coc];
+
+// 接收roll点指令
+function sentMsg(key:string){
+  for (const item of cmd) {
+    if (item.isCmd(key)) {
+      if ('isParam' in item) {
+        return item.isParam(key);
+      } else {
+        return item.runCmd()
+      }
+    }
+  }
+  return '指令错误！';
+}
 
 const sever = Deno.listen({port:8088});
 console.log("listen on 8088!");
@@ -11,7 +33,7 @@ async function handle(conn:Deno.Conn) {
 }
 
 async function fetchtext(req: Request) {
-  return new Response(rollSent(await req.text()), {status: 200, headers:{"Access-Control-Allow-Origin": "http://127.0.0.1:8081"}});
+  return new Response(sentMsg(await req.text()), {status: 200, headers:{"Access-Control-Allow-Origin": "http://127.0.0.1:8081"}});
 }
 
 async function handleReq(req: Request) {
