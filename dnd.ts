@@ -1,4 +1,4 @@
-import { Dice } from './dice.ts'
+import { Dice, totalValue } from './dice.ts'
 
 export class Dnd {
   public name = 'dnd';
@@ -15,7 +15,7 @@ export class Dnd {
     const all:string[] = [];
     for (let index = 0; index < 6; index++) {
       const element = dice.roll();
-      const total = dice.totalValue() - Math.min(...element);
+      const total = totalValue(element) - Math.min(...element);
       all.push(`(${element}): ${total}`);
       console.log(all);
     }

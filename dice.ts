@@ -10,8 +10,8 @@ export class Dice {
     }
     return this.result;
   }
+}
 
-  public totalValue(){
-    return this.result.reduce((total:number, number:number) => total + number)
-  }
+export function totalValue(arr:number[]) {
+  return arr.reduce((total:number, number:number) => total + number)
 }

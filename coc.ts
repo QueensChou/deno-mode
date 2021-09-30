@@ -1,4 +1,4 @@
-import { Dice } from './dice.ts'
+import { Dice, totalValue } from './dice.ts'
 
 export class Coc {
   public name = 'coc';
@@ -12,6 +12,7 @@ export class Coc {
   public runCmd () {
     const all:string[] = [];
     let total = 0, noLuck = 0;
+    console.log(total);
     for (const [key, value] of this.list) {
       let number = 0;
       switch (value) {
@@ -28,24 +29,30 @@ export class Coc {
       if (key !== '幸运') {
         noLuck = noLuck + number;
       }
+      all.push(`${key}:${number} `)
     }
-    
-    return all.join('');
+    let str = `总计：${total}  不含幸运：${noLuck}\n`;
+    for (const key of all.keys()) {
+      if ((key + 1) % 3 === 0) {
+        str = str + all[key] + '\n';
+      } else {
+        str = str + all[key];
+      }
+    }
+    return str;
   }
 
   private roll3d6 (){
     const dice = new Dice();
     dice.quantity = 3;
     dice.surface = 6;
-    dice.roll();
-    return dice.totalValue() * 5;
+    return totalValue(dice.roll()) * 5;
   }
 
   private roll2d6 (){
     const dice = new Dice();
     dice.quantity = 2;
     dice.surface = 6;
-    dice.roll();
-    return (dice.totalValue() + 6) * 5;
+    return (totalValue(dice.roll()) + 6) * 5;
   }
 }
