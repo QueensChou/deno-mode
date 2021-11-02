@@ -1,12 +1,16 @@
 import { Roll } from './roll.ts';
 import { Dnd } from './dnd.ts';
 import { Coc } from './coc.ts';
+import { Qmz } from './qmz.ts';
+import { Cmz } from './cmz.ts';
 
 const roll = new Roll();
 const dnd = new Dnd();
 const coc = new Coc();
+const qmz = new Qmz();
+const cmz = new Cmz();
 
-const cmd = [roll, dnd, coc];
+const cmd = [roll, dnd, coc, qmz, cmz];
 
 // 接收roll点指令
 function sentMsg(key:string){
@@ -19,7 +23,7 @@ function sentMsg(key:string){
       }
     }
   }
-  return '指令错误！';
+  return null;
 }
 
 const sever = Deno.listen({port:8088});
@@ -33,7 +37,9 @@ async function handle(conn:Deno.Conn) {
 }
 
 async function fetchtext(req: Request) {
-  return new Response(sentMsg(await req.text()), {status: 200, headers:{"Access-Control-Allow-Origin": "http://127.0.0.1:8081"}});
+  const data = req.text();
+  console.log(await data);
+  return new Response(sentMsg(await data), {status: 200, headers:{"Access-Control-Allow-Origin": "http://127.0.0.1:8081"}});
 }
 
 async function handleReq(req: Request) {

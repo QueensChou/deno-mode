@@ -1,11 +1,11 @@
-import { Dice } from './dice.ts';
+import { Dice, totalValue } from './dice.ts';
 
 export class Roll {
-  public name = 'roll';
-  public regName = /^\/roll\s*(?<param>.*)$/;
-  public defaultParam = '1d100';
-  public regParam = /^(?<quantity>\d*)[dD](?<surface>\d+)\s*(?<adjust>(\s*[\+\-]\s*\d+)*)\s*$/;
-  public paramError = '参数错误!参数为xDy+z，x为数量（可选，默认为1），y为面数，z为调整值（可选，可重复，默认为1）';
+  private name = 'roll';
+  private regName = /^\/roll\s*(?<param>.*)$/;
+  private defaultParam = '1d100';
+  private regParam = /^(?<quantity>\d*)[dD](?<surface>\d+)\s*(?<adjust>(\s*[\+\-]\s*\d+)*)\s*$/;
+  private paramError = '参数错误!参数为xDy+z，x为数量（可选，默认为1），y为面数，z为调整值（可选，可重复，默认为1）';
 
   public isCmd (text:string) {
     return this.regName.test(text);
@@ -48,7 +48,7 @@ export class Roll {
     const result = dice.roll();
     console.log(result);
     if (result.length > 1) {
-      total = result.reduce((total:number, number:number) => total + number);
+      total = totalValue(result);
       str = `${quantity}D${surface}${adjust}: ${result.join('+')}=${total}`;
     } else {
       total = result[0];
