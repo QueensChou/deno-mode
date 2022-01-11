@@ -17,7 +17,7 @@ export class Dnd {
       const element = dice.roll();
       const total = totalValue(element) - Math.min(...element);
       all.push(`(${element}): ${total}`);
-      console.log(all);
+      // console.log(all);
     }
     all.sort((a,b) => {
       const reg = /\:\s(?<number>\d+)$/;
