@@ -2,7 +2,7 @@ import { Dice, totalValue } from './dice.ts';
 
 export class Roll {
   private name = 'roll';
-  private regName = /^\/roll\s*(?<param>.*)$/;
+  private regName = /^roll\s*(?<param>.*)$/;
   private defaultParam = '1d100';
   private regParam = /^(?<quantity>\d*)[dD](?<surface>\d+)\s*(?<adjust>(\s*[\+\-]\s*\d+)*)\s*$/;
   private paramError = '参数错误!参数为xDy+z，x为数量（可选，默认为1），y为面数，z为调整值（可选，可重复，默认为空）';

@@ -2,7 +2,7 @@ import { Dice, totalValue } from './dice.ts'
 
 export class Dnd {
   private name = 'dnd';
-  private regName = /^\/dnd\s*$/;
+  private regName = /^dnd\s*$/;
 
   public isCmd (text:string) {
     return this.regName.test(text);

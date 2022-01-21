@@ -1,38 +1,39 @@
 {
+  "total": 4,
   "city": ["格里达尼亚", "利姆萨·罗敏萨", "乌尔达哈", "伊修加德", "黄金港", "水晶都"],
   "npc": [
     {
       "name": "阿尔菲诺",
       "buff": "3d3",
-      "type": "b"
+      "type": 2
     },{
       "name": "阿莉塞",
       "buff": "3d3",
-      "type": "s"
+      "type": 3
     },{
       "name": "雅·修特拉",
       "buff": "5d3",
-      "type": "n"
+      "type": 0
     },{
       "name": "桑克瑞德",
       "buff": "3d5",
-      "type": "n"
+      "type": 0
     },{
       "name": "于里昂热",
       "buff": "2d7",
-      "type": "n"
+      "type": 0
     },{
       "name": "塔塔露",
       "buff": "给你做了一套新衣服，并没有任何效果~",
-      "type": "n"
+      "type": 0
     },{
       "name": "古·拉哈·提亚",
       "buff": "7d2",
-      "type": "n"
+      "type": 0
     },{
       "name": "爱梅特赛尔克",
       "buff": "1d0",
-      "type": "a"
+      "type": 1
     }
   ],
   "enemy": [

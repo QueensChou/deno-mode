@@ -15,3 +15,7 @@ export class Dice {
 export function totalValue(arr:number[]) {
   return arr.reduce((total:number, number:number) => total + number)
 }
+
+export function randomNum(max:number, min = 1) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
