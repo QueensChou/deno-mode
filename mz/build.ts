@@ -1,9 +1,10 @@
 /// <reference types="../src/qq.d.ts" />
+import { randomNum } from '../dice/dice.ts';
 import { searchMZDB, insertMZDB } from '../src/db.ts';
 import { dayjs } from '../plugin/dayjs.ts';
 import { cqmsg } from '../src/cqmsg.ts';
 
-export class Build {
+class Build {
   private name = 'build';
   private regName = /^build\s*(?<param>.*)$/;
   private regParam = /^(?<self>\d+)\s+(?<group>\d+)\s*$/;
@@ -45,7 +46,7 @@ export class Build {
       if (!selfData.total || selfData.total < 10) {
         return `${await cqmsg.atstring(self, group)} 你只有${selfData.total}块闷砖，至少需要10块才能建造！`;
       } else {
-        if (dayjs().isSame(dayjs.unix(selfData.build_time),'day')) {
+        if (dayjs().isSame(dayjs(selfData.build_time),'day')) {
           return `${await cqmsg.atstring(self, group)} 你今天已经建造过了，你的房子有${selfData.floor}层了！`;
         } else {
           return await this.randomBuild(selfData)
@@ -55,14 +56,14 @@ export class Build {
   }
 
   private async randomBuild(selfData: MZList) {
-    const number = Math.floor(Math.random() * 10);
-    if (number < 1) {
+    const number = randomNum(100);
+    if (number < 2) {
       return await this.buildSuc(selfData, 1);
-    } else if (number < 2) {
+    } else if (number < 3) {
       return await this.buildfail(selfData, 1);
-    } else if (number < 4) {
+    } else if (number < 23) {
       return await this.buildfail(selfData);
-    } else if (number < 6) {
+    } else if (number < 43) {
       return await this.buildSuc(selfData, 2);
     } else {
       return await this.buildSuc(selfData);
@@ -116,3 +117,5 @@ export class Build {
     await insertMZDB(selfData);
   }
 }
+
+export const build = new Build();

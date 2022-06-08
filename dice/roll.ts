@@ -1,6 +1,6 @@
 import { Dice, totalValue } from './dice.ts';
 
-export class Roll {
+class Roll {
   private name = 'roll';
   private regName = /^roll\s*(?<param>.*)$/;
   private defaultParam = '1d100';
@@ -41,12 +41,12 @@ export class Roll {
       value = adjust.split(/[\-\+]/);
       value.shift();
     }
-    console.log(`投掷${quantity}D${surface}${adjust}${type.length > 0 ? ',拆分为' : ''}${type}${type.length > 0 ? '和' : ''}${value}`);
+    // console.log(`投掷${quantity}D${surface}${adjust}${type.length > 0 ? ',拆分为' : ''}${type}${type.length > 0 ? '和' : ''}${value}`);
     const dice = new Dice;
     dice.quantity = Number(quantity);
     dice.surface = Number(surface);
     const result = dice.roll();
-    console.log(result);
+    // console.log(result);
     if (result.length > 1) {
       total = totalValue(result);
       str = `${quantity}D${surface}${adjust}: ${result.join('+')}=${total}`;
@@ -57,17 +57,10 @@ export class Roll {
     // console.log(total);
     if ( type.length > 0) {
       for (const [index, item] of type.entries()) {
-        switch (item) {
-          case '+':
-            total = total + Number(value[index]);
-            break;
-          
-          case '-':
-            total = total - Number(value[index]);
-            break;
-
-          default:
-            break;
+        if (item === '+') {
+          total = total + Number(value[index]);
+        } else if (item === '-'){
+          total = total - Number(value[index]);
         }
       }
       // console.log(total);
@@ -77,3 +70,5 @@ export class Roll {
     return str;
   }
 }
+
+export const roll = new Roll();

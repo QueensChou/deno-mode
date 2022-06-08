@@ -3,7 +3,7 @@ import { searchMZDB, insertMZDB } from '../src/db.ts';
 import { dayjs } from '../plugin/dayjs.ts';
 import { cqmsg } from '../src/cqmsg.ts';
 
-export class Tmz {
+class Tmz {
   private name = 'tmz';
   private regName = /^tmz\s+(?<param>.*)$/;
   private regParam = /^(?<enemy>\d+)\s+(?<self>\d+)\s+(?<group>\d+)\s*$/;
@@ -35,10 +35,10 @@ export class Tmz {
     let selfData = await searchMZDB(self, group);
     const enemyData = await searchMZDB(enemy, group);
     const selfDefault: MZList = {
-      user_id: enemy,
+      user_id: self,
       group_id: group,
-      total: 0,
-      hp: 0,
+      total: 20,
+      hp: 10,
       qmz_time: 0,
     };
     if(!selfData) {
@@ -69,53 +69,42 @@ export class Tmz {
     let msg = '';
     let tmz = 0;
     const number = Math.floor(Math.random() * 10);
-    switch (number) {
-      case 0:
-      case 1:
-        selfData.hp = 0;
-        selfData.qmz_time = Date.now();
-        await insertMZDB(selfData);
-        msg = `${await cqmsg.atstring(selfData.user_id, selfData.group_id)} 想偷取 ${await cqmsg.atstring(enemyData.user_id, enemyData.group_id)} 的闷砖，结果被对方的${enemyData.petname}发现，一口就没了~`;
-        break;
-      case 2:
-      case 3:
-        tmz = Math.floor(Math.random() * 4 + 7);
-        selfData.total = selfData.total as number + tmz;
-        enemyData.total = enemyData.total as number - tmz;
-        await insertMZDB(selfData);
-        await insertMZDB(enemyData);
-        msg = `${await cqmsg.atstring(selfData.user_id, selfData.group_id)} 身手矫健，成功偷取了 ${await cqmsg.atstring(enemyData.user_id, enemyData.group_id)} 的${tmz}块闷砖！`;
-        break;
-      case 4:
-      case 5:
-        tmz = Math.floor(Math.random() * 4 + 3);
-        selfData.total = selfData.total as number + tmz;
-        enemyData.total = enemyData.total as number - tmz;
-        await insertMZDB(selfData);
-        await insertMZDB(enemyData);
-        msg = `${await cqmsg.atstring(selfData.user_id, selfData.group_id)} 身手平平，偷取了 ${await cqmsg.atstring(enemyData.user_id, enemyData.group_id)} 的${tmz}块闷砖！`;
-        break;
-      case 6:
-      case 7:
-        tmz = Math.floor(Math.random() * 2 + 1);
-        selfData.total = selfData.total as number + tmz;
-        enemyData.total = enemyData.total as number - tmz;
-        await insertMZDB(selfData);
-        await insertMZDB(enemyData);
-        msg = `${await cqmsg.atstring(selfData.user_id, selfData.group_id)} 急于求成，只偷取了 ${await cqmsg.atstring(enemyData.user_id, enemyData.group_id)} 的${tmz}块闷砖！`;
-        break;
-      case 8:
-      case 9:
-        tmz = Math.floor(Math.random() * 2 + 1);
-        selfData.total = selfData.total as number - tmz;
-        enemyData.total = enemyData.total as number + tmz;
-        await insertMZDB(selfData);
-        await insertMZDB(enemyData);
-        msg = `${await cqmsg.atstring(selfData.user_id, selfData.group_id)} 被 ${await cqmsg.atstring(enemyData.user_id, enemyData.group_id)} 的${enemyData.petname}发现，为了保命，只好丢下${tmz}块闷砖逃走了！`;
-        break;
-      default:
-        break;
+    if (number < 2) {
+      selfData.hp = 0;
+      selfData.qmz_time = Date.now();
+      await insertMZDB(selfData);
+      msg = `${await cqmsg.atstring(selfData.user_id, selfData.group_id)} 想偷取 ${await cqmsg.atstring(enemyData.user_id, enemyData.group_id)} 的闷砖，结果被对方的${enemyData.petname}发现，一口就没了~`;
+    } else if (number <4){
+      tmz = Math.floor(Math.random() * 4 + 7);
+      selfData.total = selfData.total as number + tmz;
+      enemyData.total = enemyData.total as number - tmz;
+      await insertMZDB(selfData);
+      await insertMZDB(enemyData);
+      msg = `${await cqmsg.atstring(selfData.user_id, selfData.group_id)} 身手矫健，成功偷取了 ${await cqmsg.atstring(enemyData.user_id, enemyData.group_id)} 的${tmz}块闷砖！`;
+    } else if (number <6){
+      tmz = Math.floor(Math.random() * 4 + 3);
+      selfData.total = selfData.total as number + tmz;
+      enemyData.total = enemyData.total as number - tmz;
+      await insertMZDB(selfData);
+      await insertMZDB(enemyData);
+      msg = `${await cqmsg.atstring(selfData.user_id, selfData.group_id)} 身手平平，偷取了 ${await cqmsg.atstring(enemyData.user_id, enemyData.group_id)} 的${tmz}块闷砖！`;
+    } else if (number <8){
+      tmz = Math.floor(Math.random() * 2 + 1);
+      selfData.total = selfData.total as number + tmz;
+      enemyData.total = enemyData.total as number - tmz;
+      await insertMZDB(selfData);
+      await insertMZDB(enemyData);
+      msg = `${await cqmsg.atstring(selfData.user_id, selfData.group_id)} 急于求成，只偷取了 ${await cqmsg.atstring(enemyData.user_id, enemyData.group_id)} 的${tmz}块闷砖！`;
+    } else{
+      tmz = Math.floor(Math.random() * 2 + 1);
+      selfData.total = selfData.total as number - tmz;
+      enemyData.total = enemyData.total as number + tmz;
+      await insertMZDB(selfData);
+      await insertMZDB(enemyData);
+      msg = `${await cqmsg.atstring(selfData.user_id, selfData.group_id)} 被 ${await cqmsg.atstring(enemyData.user_id, enemyData.group_id)} 的${enemyData.petname}发现，为了保命，只好丢下${tmz}块闷砖逃走了！`;
     }
     return msg;
   }
 }
+
+export const tmz = new Tmz();

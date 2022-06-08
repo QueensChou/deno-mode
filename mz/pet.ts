@@ -1,7 +1,7 @@
 import { insertMZDB } from '../src/db.ts';
 import { cqmsg } from '../src/cqmsg.ts';
 
-export class PetName {
+class PetName {
   private name = 'petname';
   private regName = /^petname\s*(?<param>.*)$/;
   private regParam = /^(?<name>\S+)\s+(?<self>\d+)\s+(?<group>\d+)\s*$/;
@@ -38,3 +38,5 @@ export class PetName {
     }
   }
 }
+
+export const petname = new PetName();

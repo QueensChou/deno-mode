@@ -1,6 +1,6 @@
 import { Dice, totalValue } from './dice.ts'
 
-export class Dnd {
+class Dnd {
   private name = 'dnd';
   private regName = /^dnd\s*$/;
 
@@ -28,3 +28,5 @@ export class Dnd {
     return all.join('\n');
   }
 }
+
+export const dnd = new Dnd();

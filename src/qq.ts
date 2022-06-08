@@ -3,36 +3,28 @@ import { reply } from './reply.ts';
 import { prevQQ } from './ws.ts';
 import { cqmsg } from './cqmsg.ts';
 import { searchUserID } from './db.ts';
-const groupCmd = /cmz|qmz|register|tmz|build|petname/;
+const groupCmd = /cmz|qmz|register|tmz|build|petname|rank|ffxiv/;
 let enemyMsg = null;
+const cmdStart = '-';
 
 export async function qq(e:qqMessage) {
-  if (e.raw_message.startsWith('/')) {
-    let message = e.raw_message.replace('/', '');
+  if (e.raw_message.startsWith(cmdStart)) {
+    let message = e.raw_message.replace(cmdStart, '');
     const groupArr = groupCmd.exec(message);
     if(groupArr) {
       if(e.group_id){
-        switch (groupArr[0]) {
-          case 'cmz':
-          case 'build':
-          case 'petname':
-            message = `${message} ${e.user_id} ${e.group_id}`;
-            break;
-          case 'qmz':
-          case 'tmz':
-            enemyMsg = await getEnemy(message, e.group_id);
-            // console.log('返回对手数据：', enemyMsg);
-            if (enemyMsg) {
-              message = `${enemyMsg} ${e.user_id} ${e.group_id}`;
-            } else{
-              return cqmsg.replyMsg('send', '未获取到上一位发言人或者@对象不存在或对方更新名片，请使用register指令更新群员数据！');
-            }
-            break;
-          case 'register':
-            return cqmsg.replyMsg('getInfo','');
-
-          default:
-            break;
+        if (/cmz|build|petname|rank|ffxiv/.test(groupArr[0])) {
+          message = `${message} ${e.user_id} ${e.group_id}`;
+        } else if (/qmz|tmz/.test(groupArr[0])) {
+          enemyMsg = await getEnemy(message, e.group_id);
+          // console.log('返回对手数据：', enemyMsg);
+          if (enemyMsg) {
+            message = `${enemyMsg} ${e.user_id} ${e.group_id}`;
+          } else{
+            return cqmsg.replyMsg('send', '未获取到上一位发言人或者@对象不存在或对方更新名片，请使用register指令更新群员数据！');
+          }
+        } else if (groupArr[0] === 'register') {
+          return cqmsg.replyMsg('getInfo','');
         }
       } else {
         return cqmsg.replyMsg('send', '该指令需在群内使用！');

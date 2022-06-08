@@ -3,7 +3,7 @@ import { dayjs } from '../plugin/dayjs.ts';
 import { cqmsg } from '../src/cqmsg.ts';
 import { randomNum } from '../dice/dice.ts';
 
-export class Cmz {
+class Cmz {
   private name = 'cmz';
   private regName = /^cmz\s*(?<param>.*)$/;
   private regParam = /^(?<self>\d+)\s+(?<group>\d+)\s*$/;
@@ -27,34 +27,39 @@ export class Cmz {
     const arrCmd = this.regParam.exec(text);
     const self = Number(arrCmd?.groups?.self);
     const group = Number(arrCmd?.groups?.group);
-    const time = Date.now();
     // console.log(self, group);
+    const defaultData = {
+      user_id: self,
+      group_id: group,
+      total: 20,
+      floor: 10,
+      cmz_time: 0,
+    }
     const data = await searchMZDB(self, group);
-    if (data && dayjs(time).isSame(dayjs(data.cmz_time),'day')) {
+    if (data) {
+      defaultData.total = data.total as number;
+      defaultData.floor = data.floor as number;
+      defaultData.cmz_time = data.cmz_time as number;
+    }
+    if (dayjs().isSame(dayjs(defaultData.cmz_time),'day')) {
       // 已经抽过
-      return `${await cqmsg.atstring(self, group)}  你已经抽过闷砖了！目前你有${data.total}块闷砖。`;
+      return `${await cqmsg.atstring(self, group)}  你已经抽过闷砖了！目前你有${defaultData.total}块闷砖。`;
     } else {
+      defaultData.cmz_time = Date.now();
       const number = randomNum(10);
       let floorNum = 0;
-      if (data?.floor && data.floor === 1) {
+      if (defaultData.floor === 1) {
         floorNum = 1;
       }
-      if (data?.floor && data.floor > 1) {
-        floorNum = randomNum(data.floor);
+      if (defaultData.floor > 1) {
+        floorNum = randomNum(defaultData.floor);
       }
-      let total = number;
-      if (data && data.total) {
-        total = total + data.total + floorNum;
-      }
-      const mzdata = {
-        user_id: self,
-        group_id: group,
-        total: total,
-        cmz_time: time,
-      }
-      await insertMZDB(mzdata);
+      defaultData.total = defaultData.total + number + floorNum;
+      await insertMZDB(defaultData);
       
-      return `${await cqmsg.atstring(self, group)}  呐~刚烧好的${number}块闷砖🧱，房子今日产出${floorNum}块闷砖🧱，目前你有${total}块闷砖。`
+      return `${await cqmsg.atstring(self, group)}  呐~刚烧好的${number}块闷砖🧱，房子今日产出${floorNum}块闷砖🧱，目前你有${defaultData.total}块闷砖。`;
     }
   }
 }
+
+export const cmz = new Cmz();

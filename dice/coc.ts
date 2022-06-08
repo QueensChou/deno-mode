@@ -1,6 +1,6 @@
-import { Dice, totalValue } from './dice.ts'
+import { Dice, totalValue } from './dice.ts';
 
-export class Coc {
+class Coc {
   private name = 'coc';
   private regName = /^coc\s*$/;
   private list = new Map([['力量','3d6'], ['体质','3d6'], ['体型','2d6'], ['敏捷','3d6'], ['外貌','3d6'], ['智力','2d6'], ['意志','3d6'], ['教育','2d6'], ['幸运','3d6']]);
@@ -15,15 +15,10 @@ export class Coc {
     console.log(total);
     for (const [key, value] of this.list) {
       let number = 0;
-      switch (value) {
-        case '3d6':
-          number = this.roll3d6();
-          break;
-        case '2d6':
-          number = this.roll2d6();
-          break;
-        default:
-          break;
+      if (value === '3d6') {
+        number = this.roll3d6();
+      } else if (value === '2d6') {
+        number = this.roll2d6();
       }
       total = total + number;
       if (key !== '幸运') {
@@ -56,3 +51,5 @@ export class Coc {
     return (totalValue(dice.roll()) + 6) * 5;
   }
 }
+
+export const coc = new Coc();

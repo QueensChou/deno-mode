@@ -72,3 +72,45 @@ interface groupList {
   nickname: string,
   card: string,
 }
+
+interface cityList {
+  city_id: number,
+  group_id: number,
+  user_id: number,
+  get_time: string,
+}
+
+interface players {
+  user_id: number,
+  group_id: number,
+  gp: number,
+  att: number,
+  select_gp: number,
+  last_time: number,
+  select_time: number,
+}
+
+interface ranks {
+  user_id: number,
+  group_id: number,
+}
+
+interface DBList {
+  user_id?: number,
+  group_id?: number,
+  nickname?: string,
+  card?: string,
+  total?: number,
+  cmz_time?: number,
+  hp?: number,
+  qmz_time?: number,
+  floor?: number,
+  build_time?: number,
+  petname?: string,
+  city_id?: number,
+  get_time?: number,
+  gp?: number,
+  att?: number,
+  last_time?: number,
+}
+

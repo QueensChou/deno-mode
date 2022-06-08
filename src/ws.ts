@@ -36,13 +36,13 @@ function handler(req: Request): Response {
         nowQQ.set(data.group_id, data.user_id);
       }
 
-      if(data.post_type === 'message') {
+      if (data.post_type === 'message') {
         // 收到消息进行处理
         qq (data).then(msg => {
           // 返回数据
           if (msg) {
             // 类型为回复消息
-            if (msg.type === 'send'){
+            if (msg.type === 'send') {
               const sendData:sendMsg = {
                 action: 'send_private_msg',
                 params: {
@@ -58,6 +58,7 @@ function handler(req: Request): Response {
                 };
               }
               // console.log(sendData);
+              console.log(msg.data);
               socket.send(JSON.stringify(sendData));
             } else if (msg.type === 'getInfo') {
               // 类型为获取群信息

@@ -3,7 +3,7 @@ import { searchMZDB, insertMZDB } from '../src/db.ts';
 import { dayjs } from '../plugin/dayjs.ts';
 import { cqmsg } from '../src/cqmsg.ts';
 
-export class Qmz {
+class Qmz {
   private name = 'qmz';
   private regName = /^qmz\s+(?<param>.*)$/;
   // public defaultParam = '1';
@@ -100,61 +100,48 @@ export class Qmz {
     } else {
       let msg = '';
       const number = Math.floor(Math.random() * 10);
-      switch (number) {
-        case 0:
-        case 1:
-          selfData.total = selfData.total as number - quantity;
-          enemyData.hp = enemyData.hp as number - quantity;
-          enemyData.qmz_time = Date.now();
-          await insertMZDB(selfData);
-          await insertMZDB(enemyData);
-          msg = `${await cqmsg.atstring(selfData.user_id, selfData.group_id)} 拿起${quantity}块闷砖对 ${await cqmsg.atstring(enemyData.user_id, enemyData.group_id)} 狠狠来了一记闷砖！${this.hpResult(enemyData.hp, 'enemy')}`;
-          break;
-        case 2:
-        case 3:
-          selfData.total = selfData.total as number - quantity;
-          enemyData.hp = enemyData.hp as number - quantity * 2;
-          enemyData.qmz_time = Date.now();
-          await insertMZDB(selfData);
-          await insertMZDB(enemyData);
-          msg = `${await cqmsg.atstring(selfData.user_id, selfData.group_id)} 拿起${quantity}块闷砖敲中了 ${await cqmsg.atstring(enemyData.user_id, enemyData.group_id)} 命门，造成了双倍伤害！${this.hpResult(enemyData.hp, 'enemy')}`;
-          break;
-        case 4:
-        case 5:
-          selfData.total = selfData.total as number - quantity;
-          await insertMZDB(selfData);
-          msg = `${await cqmsg.atstring(selfData.user_id, selfData.group_id)} 手滑甩飞了${quantity}块闷砖！`;
-          break;
-        case 6:
-        case 7:
-          selfData.total = selfData.total as number - quantity;
-          selfData.hp = selfData.hp as number - quantity;
-          await insertMZDB(selfData);
-          msg = `${await cqmsg.atstring(selfData.user_id, selfData.group_id)} 不小心被发现了！被 ${await cqmsg.atstring(enemyData.user_id, enemyData.group_id)} 夺走了${quantity}块闷砖并狠狠来了一记！${this.hpResult(selfData.hp, 'self')}`;
-          break;
-        case 8:
-        case 9:
-          selfData.total = selfData.total as number - quantity;
-          enemyData.total = enemyData.total as number + quantity;
-          await insertMZDB(selfData);
-          await insertMZDB(enemyData);
-          msg = `${await cqmsg.atstring(selfData.user_id, selfData.group_id)} 没抓稳，${quantity}块闷砖掉在地上被 ${await cqmsg.atstring(enemyData.user_id, enemyData.group_id)} 捡走了！`;
-          break;
-        default:
-          break;
+      if (number < 2) {
+        selfData.total = selfData.total as number - quantity;
+        enemyData.hp = enemyData.hp as number - quantity;
+        enemyData.qmz_time = Date.now();
+        await insertMZDB(selfData);
+        await insertMZDB(enemyData);
+        msg = `${await cqmsg.atstring(selfData.user_id, selfData.group_id)} 拿起${quantity}块闷砖对 ${await cqmsg.atstring(enemyData.user_id, enemyData.group_id)} 狠狠来了一记闷砖！${this.hpResult(enemyData.hp, 'enemy')}`;
+      } else if (number < 4) {
+        selfData.total = selfData.total as number - quantity;
+        enemyData.hp = enemyData.hp as number - quantity * 2;
+        enemyData.qmz_time = Date.now();
+        await insertMZDB(selfData);
+        await insertMZDB(enemyData);
+        msg = `${await cqmsg.atstring(selfData.user_id, selfData.group_id)} 拿起${quantity}块闷砖敲中了 ${await cqmsg.atstring(enemyData.user_id, enemyData.group_id)} 命门，造成了双倍伤害！${this.hpResult(enemyData.hp, 'enemy')}`;
+      } else if (number < 6) {
+        selfData.total = selfData.total as number - quantity;
+        await insertMZDB(selfData);
+        msg = `${await cqmsg.atstring(selfData.user_id, selfData.group_id)} 手滑甩飞了${quantity}块闷砖！`;
+      } else if (number < 8) {
+        selfData.total = selfData.total as number - quantity;
+        selfData.hp = selfData.hp as number - quantity;
+        selfData.qmz_time = Date.now();
+        await insertMZDB(selfData);
+        msg = `${await cqmsg.atstring(selfData.user_id, selfData.group_id)} 不小心被发现了！被 ${await cqmsg.atstring(enemyData.user_id, enemyData.group_id)} 夺走了${quantity}块闷砖并狠狠来了一记！${this.hpResult(selfData.hp, 'self')}`;
+      } else {
+        selfData.total = selfData.total as number - quantity;
+        enemyData.total = enemyData.total as number + quantity;
+        await insertMZDB(selfData);
+        await insertMZDB(enemyData);
+        msg = `${await cqmsg.atstring(selfData.user_id, selfData.group_id)} 没抓稳，${quantity}块闷砖掉在地上被 ${await cqmsg.atstring(enemyData.user_id, enemyData.group_id)} 捡走了！`;
       }
       return msg;
     }
   }
 
   private hpResult(hp:number, type = 'enemy'){
-    switch (type) {
-      case 'self':
-        return hp <= 0 ? `R.I.P~你自己被敲死了！` : `你自己还剩${hp}点HP！`;
-      case 'enemy':
-        return hp <= 0 ? `WOW~对方被你敲死了！` : `对方还剩${hp}点HP！`;
-      default:
-        break;
+    if (type === 'self') {
+      return hp <= 0 ? `R.I.P~你自己被敲死了！` : `你自己还剩${hp}点HP！`;
+    } else {
+      return hp <= 0 ? `WOW~对方被你敲死了！` : `对方还剩${hp}点HP！`;
     }
   }
 }
+
+export const qmz = new Qmz();

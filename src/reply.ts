@@ -1,22 +1,15 @@
-import { Roll } from '../dice/roll.ts';
-import { Dnd } from '../dice/dnd.ts';
-import { Coc } from '../dice/coc.ts';
-import { Qmz } from '../mz/qmz.ts';
-import { Cmz } from '../mz/cmz.ts';
-import { Tmz } from '../mz/tmz.ts';
-import { Build } from '../mz/build.ts';
-import { PetName } from '../mz/pet.ts';
+import { roll } from '../dice/roll.ts';
+import { dnd } from '../dice/dnd.ts';
+import { coc } from '../dice/coc.ts';
+import { qmz } from '../mz/qmz.ts';
+import { cmz } from '../mz/cmz.ts';
+import { tmz } from '../mz/tmz.ts';
+import { build } from '../mz/build.ts';
+import { petname } from '../mz/pet.ts';
+import { rank } from '../mz/rank.ts';
+import { ffxiv } from '../ffxiv/main.ts';
 
-const roll = new Roll();
-const dnd = new Dnd();
-const coc = new Coc();
-const qmz = new Qmz();
-const cmz = new Cmz();
-const tmz = new Tmz();
-const build = new Build();
-const petname = new PetName();
-
-const cmd = [roll, dnd, coc, qmz, cmz, tmz, build, petname];
+const cmd = [roll, dnd, coc, qmz, cmz, tmz, build, petname, rank, ffxiv];
 
 // 接收roll点指令
 export function reply(key:string){

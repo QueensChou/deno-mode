@@ -1,87 +1,119 @@
 {
   "total": 4,
-  "city": ["格里达尼亚", "利姆萨·罗敏萨", "乌尔达哈", "伊修加德", "黄金港", "水晶都"],
+  "city": [
+    {
+      "name": "格里达尼亚",
+      "id": 10000,
+      "owner": "嘉恩·艾"
+    },{
+      "name": "利姆萨·罗敏萨",
+      "id": 10001,
+      "owner": "梅尔维布"
+    },{
+      "name": "乌尔达哈",
+      "id": 10002,
+      "owner": "娜娜莫"
+    },{
+      "name": "伊修加德",
+      "id": 10003,
+      "owner": "艾默里克"
+    },{
+      "name": "黄金港",
+      "id": 10004,
+      "owner": "真琴"
+    },{
+      "name": "水晶都",
+      "id": 10005,
+      "owner": "莱楠"
+    }
+  ],
   "npc": [
     {
+      "name": "塔塔露",
+      "buff": "0",
+      "probably": 10
+    },{
       "name": "阿尔菲诺",
-      "buff": "3d3",
-      "type": 2
+      "buff": "1d4",
+      "probably": 40
     },{
       "name": "阿莉塞",
-      "buff": "3d3",
-      "type": 3
+      "buff": "1d4",
+      "probably": 70
     },{
       "name": "雅·修特拉",
-      "buff": "5d3",
-      "type": 0
+      "buff": "1d6",
+      "probably": 80
     },{
       "name": "桑克瑞德",
-      "buff": "3d5",
-      "type": 0
+      "buff": "2d4",
+      "probably": 88
     },{
       "name": "于里昂热",
-      "buff": "2d7",
-      "type": 0
-    },{
-      "name": "塔塔露",
-      "buff": "给你做了一套新衣服，并没有任何效果~",
-      "type": 0
+      "buff": "1d8",
+      "probably": 97
     },{
       "name": "古·拉哈·提亚",
-      "buff": "7d2",
-      "type": 0
+      "buff": "1d10",
+      "probably": 99
     },{
       "name": "爱梅特赛尔克",
-      "buff": "1d0",
-      "type": 1
+      "buff": "2d6",
+      "probably": 100
     }
   ],
   "enemy": [
     {
       "name": "伊弗利特",
       "att": 20,
-      "buff": "2d3"
+      "buff": "1d4"
     },{
       "name": "迦楼罗",
       "att": 24,
-      "buff": "3d3"
+      "buff": "1d6"
     },{
       "name": "泰坦",
       "att": 40,
-      "buff": "3d0"
+      "buff": "2d6"
     },{
       "name": "利维亚桑",
       "att": 28,
-      "buff": "4d3"
+      "buff": "1d8"
     },{
       "name": "拉姆",
       "att": 24,
-      "buff": "4d2"
+      "buff": "2d3"
     },{
       "name": "俾斯麦",
       "att": 28,
-      "buff": "5d2"
+      "buff": "2d4"
     }
   ],
   "pet": [
     {
       "name": "猫小胖",
-      "buff": 1
+      "buff": 1,
+      "probably": 50
     },{
       "name": "豆豆柴",
-      "buff": 1
+      "buff": 2,
+      "probably": 75
     },{
       "name": "椒盐海豹",
-      "buff": 1
+      "buff": 3,
+      "probably": 88
     },{
       "name": "凯西幼苗",
-      "buff": -1
+      "buff": 4,
+      "probably": 94
     },{
       "name": "刻耳柏洛斯",
-      "buff": -1
+      "buff": 5,
+      "probably": 98
     },{
       "name": "触手",
-      "buff": -1
+      "buff": 6,
+      "probably": 100
     }
   ]
 }
